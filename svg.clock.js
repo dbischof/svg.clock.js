@@ -1,4 +1,5 @@
-/* Clock.svg v0.1 (c) 2013 Wout Fierens - Svg.js is licensed under the terms of the MIT License */
+/* Clock.svg v0.2 (c) 2015 Dominique Bischof - Svg.js is licensed under the terms of the MIT License */
+/* Based on Clock.svg v0.1 (c) 2013 Wout Fierens */
 SVG.Clock = function(size, options) {
   var i, settings
   
@@ -65,7 +66,7 @@ SVG.Clock = function(size, options) {
     .font({
       anchor: 'middle'
     , size:   6
-    , family: 'Helvetcia Neue, Helvetcia, Arial' //Source Sans Pro,
+    , family: 'Helvetica Neue, Helvetica, Arial' //Source Sans Pro,
     , weight: '300'
     })
     .click(function() {
@@ -168,22 +169,35 @@ SVG.extend(SVG.Clock, {
 , setSeconds: function(seconds, duration) {
     /* store seconds */
     this.time.seconds = seconds
-    
-    /* register a full circle */
-    if (seconds == 0)
+
+    if (seconds == 0) {
+      /* register a full circle */
       this.full.seconds++
-    
-    /* calculate rotation */
-    var deg = this.full.seconds * 360 + 360 / 60 * seconds
-    
-    /* animate if duration is given */
-    if (duration)
+
+      /* animate full rotation in 58 seconds */
+      var deg = this.full.seconds * 360 + 360
       this.seconds
-        .animate(duration, SVG.easing.elastic)
+        .animate(58000, '-')
         .rotate(deg, 50, 50)
-    else
-      this.seconds
-        .rotate(deg, 50, 50)
+    }
+    else if (!duration) {
+      if (seconds >= 58) {
+        /* pause at top of minute */
+        this.seconds
+          .rotate(360)
+      }
+      else {
+        var deg = this.full.seconds * 360 + 360 / 58 * seconds
+        this.seconds
+          .rotate(deg, 50, 50)
+
+        /* animate remainder of rotation until 2 seconds to top of minute */
+        var duration = 58000 - seconds * 1000
+        this.seconds
+          .animate(duration, '-')
+          .rotate(360, 50, 50)
+      }
+    }
     
     return this
   }

@@ -1,6 +1,6 @@
 # svg.clock.js
 
-A clock build with [svg.js](https://github.com/wout/svg.js), inspired by the swiss railway clock, designed by Hans Hilfiker.
+A clock build with [svg.js](https://github.com/wout/svg.js), inspired by the swiss railway clock, designed by Hans Hilfiker. The clock features a 58-second sweep and pause before the top of the minute.
 
 Svg.clock.js is licensed under the terms of the MIT License.
 
